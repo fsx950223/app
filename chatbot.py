@@ -1,12 +1,12 @@
-# from transformers import OPTForCausalLM, GPT2Tokenizer
-from transformers import LlamaForCausalLM, LlamaTokenizer
+from transformers import OPTForCausalLM, GPT2Tokenizer
+# from transformers import LlamaForCausalLM, LlamaTokenizer
 import pika
 
-# model = OPTForCausalLM.from_pretrained("facebook/opt-125m")
-# tokenizer = GPT2Tokenizer.from_pretrained("facebook/opt-125m")
+model = OPTForCausalLM.from_pretrained("facebook/opt-125m")
+tokenizer = GPT2Tokenizer.from_pretrained("facebook/opt-125m")
 
-model = LlamaForCausalLM.from_pretrained("/raid/sixifang/Llama-2-7b-hf")
-tokenizer = LlamaTokenizer.from_pretrained("/raid/sixifang/Llama-2-7b-hf")
+# model = LlamaForCausalLM.from_pretrained("/raid/sixifang/Llama-2-7b-hf")
+# tokenizer = LlamaTokenizer.from_pretrained("/raid/sixifang/Llama-2-7b-hf")
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
@@ -17,7 +17,7 @@ channel.queue_declare(queue='rpc_queue')
 
 
 def on_request(ch, method, props, body):
-    prompt = body
+    prompt = body.decode('utf-8')
     inputs = tokenizer([prompt], return_tensors="pt")
     generated_ids = model.generate(**inputs, max_new_tokens=None, do_sample=False)
     response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
