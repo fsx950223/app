@@ -1,12 +1,9 @@
 from transformers import OPTForCausalLM, GPT2Tokenizer
-# from transformers import LlamaForCausalLM, LlamaTokenizer
 import pika
 
 model = OPTForCausalLM.from_pretrained("facebook/opt-125m")
 tokenizer = GPT2Tokenizer.from_pretrained("facebook/opt-125m")
 
-# model = LlamaForCausalLM.from_pretrained("/raid/sixifang/Llama-2-7b-hf")
-# tokenizer = LlamaTokenizer.from_pretrained("/raid/sixifang/Llama-2-7b-hf")
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
