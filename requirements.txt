@@ -2,3 +2,5 @@ torch
 transformers
 Flask
 pika
+pytest
+waitress
